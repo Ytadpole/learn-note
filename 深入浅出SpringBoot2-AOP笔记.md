@@ -52,7 +52,22 @@ public static Object newProxyinstance (ClassLoader classLoader,
 
 #### AOP理论点
 
-1. 连接点 join point:
-2. 切点 pint cut:
+1. 连接点 join point:需要植入流程的方法
+2. 切点 pint cut:适配连接点
+3. 通知advice：流程下的方法
 
-   
+   1. 前置通知
+   2. 后置通知
+   3. 环绕通知
+   4. 事后返回通知
+   5. 异常通知
+4. 目标对象： 被代理的对象
+5. 引入
+6. 织入
+
+spring-aop关键点
+1. 确定连接点
+2. 确定切面
+
+多个切面操作同一个连接点，可以通过**@Order** 注解指定多个切面的执行顺序，或者通过实现Ordered接口的getOrder方法。
+    
