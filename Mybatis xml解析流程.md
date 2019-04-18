@@ -99,11 +99,11 @@ mybatis对Node的进一步封装。包含当前解析器XPathParser,Node
 
 ![image-20190416151655334](images/mybatis-xml/image-20190416151655334.png)
 
-![image-20190416151723772](/Users/yangsong/learn-note/images/mybatis-xml/image-20190416151723772.png)
+![image-20190416151723772](images/mybatis-xml/image-20190416151723772.png)
 
 ####设置自定义配置
 
-![image-20190416152158884](/Users/yangsong/learn-note/images/mybatis-xml/image-20190416152158884.png)
+![image-20190416152158884](images/mybatis-xml/image-20190416152158884.png)
 
 #### environments
 
