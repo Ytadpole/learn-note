@@ -4,11 +4,11 @@
 
 java程序
 
-![image-20190429141657869](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429141657869.png)
+![image-20190429141657869](./images/mybatis-dynamic-sql/image-20190429141657869.png)
 
 xml文件
 
-![image-20190429141822905](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429141822905.png)
+![image-20190429141822905](./images/mybatis-dynamic-sql/image-20190429141822905.png)
 
 
 
@@ -16,13 +16,13 @@ xml文件
 
 直接进入到解析select语句的地方
 
-![image-20190429142103850](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429142103850.png)
+![image-20190429142103850](./images/mybatis-dynamic-sql/image-20190429142103850.png)
 
 
 
 进入
 
-![image-20190429142149442](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429142149442.png)
+![image-20190429142149442](./images/mybatis-dynamic-sql/image-20190429142149442.png)
 
 
 
@@ -32,7 +32,7 @@ xml文件
 
 核心部分创建SqlSource
 
-![image-20190429142510942](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429142510942.png)
+![image-20190429142510942](./images/mybatis-dynamic-sql/image-20190429142510942.png)
 
 
 
@@ -40,7 +40,7 @@ xml文件
 
 先读取xml配置， 读到一个MiedSqlNode中，主要是将xml节点的层次结构。
 
-![image-20190429142928655](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429142928655.png)
+![image-20190429142928655](./images/mybatis-dynamic-sql/image-20190429142928655.png)
 
 
 
@@ -54,7 +54,7 @@ xml文件
 
 比较简单，直接封装成StaticTextSqlNode。
 
-![image-20190429143258080](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429143258080.png)
+![image-20190429143258080](./images/mybatis-dynamic-sql/image-20190429143258080.png)
 
 
 
@@ -64,7 +64,7 @@ xml文件
 <if test="index != 0">,</if>
 </foreach>
 
-![image-20190429143431508](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429143431508.png)
+![image-20190429143431508](./images/mybatis-dynamic-sql/image-20190429143431508.png)
 
 
 
@@ -74,13 +74,13 @@ xml文件
 2. 将内部属性，解析返回封装成 ForEachSqlNode，可以理解为他自己是个ForEachSqlNode
 3. 将它自己（ForEachSqlNode）加入到他的上级中，<font color=red>这部分代码本身是一个递归操作</font>
 
-![image-20190429143736023](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429143736023.png)
+![image-20190429143736023](./images/mybatis-dynamic-sql/image-20190429143736023.png)
 
 
 
 进入内部标签解析，开始解析foreach内部，第一个元素是一个文本，仅仅含有一个\n换行，所以最后封装成一个StaticTextSqlNode
 
-![image-20190429144242743](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429144242743.png)
+![image-20190429144242743](./images/mybatis-dynamic-sql/image-20190429144242743.png)
 
 
 
@@ -88,7 +88,7 @@ xml文件
 
 根据标签名，选择ifHandler处理
 
-![image-20190429144928267](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429144928267.png)
+![image-20190429144928267](./images/mybatis-dynamic-sql/image-20190429144928267.png)
 
 
 
@@ -98,7 +98,7 @@ xml文件
 2. 处理自身需要的属性，并封装为IfSqlNode
 3. 将自身加入到父级SqlNode
 
-![image-20190429145303964](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429145303964.png)
+![image-20190429145303964](./images/mybatis-dynamic-sql/image-20190429145303964.png)
 
 
 
@@ -106,7 +106,7 @@ xml文件
 
 内部就是一个逗号，所以处理 就直接封装成一个StaticTextSqlNode
 
-![image-20190429145555994](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429145555994.png)
+![image-20190429145555994](./images/mybatis-dynamic-sql/image-20190429145555994.png)
 
 
 
@@ -114,7 +114,7 @@ xml文件
 
 比较简单，也是一个StaticTextSqlNode
 
-![image-20190429145933530](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429145933530.png)
+![image-20190429145933530](./images/mybatis-dynamic-sql/image-20190429145933530.png)
 
 
 
@@ -128,13 +128,13 @@ xml文件
 
 是一个树形结构  *未包含最后一个换行*
 
-![image-20190429150549158](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429150549158.png)
+![image-20190429150549158](./images/mybatis-dynamic-sql/image-20190429150549158.png)
 
 
 
 if节点展开
 
-![image-20190429150625961](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429150625961.png)
+![image-20190429150625961](./images/mybatis-dynamic-sql/image-20190429150625961.png)
 
 
 
@@ -144,7 +144,7 @@ if节点展开
 
 所有内部含有子标签，或者有${}未处理完毕的都是动态sql
 
-![image-20190429151306144](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429151306144.png)
+![image-20190429151306144](./images/mybatis-dynamic-sql/image-20190429151306144.png)
 
 
 
@@ -156,7 +156,7 @@ if节点展开
 
 #### 执行sql
 
-![image-20190429152546576](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429152546576.png)
+![image-20190429152546576](./images/mybatis-dynamic-sql/image-20190429152546576.png)
 
 
 
@@ -166,7 +166,7 @@ if节点展开
 2. 封装查询参数
 3. 交给执行器去执行
 
-![image-20190429152655108](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429152655108.png)
+![image-20190429152655108](./images/mybatis-dynamic-sql/image-20190429152655108.png)
 
 
 
@@ -175,7 +175,7 @@ if节点展开
 1. 集合，数组封装成map，key不一样而已
 2. 对象原样返回
 
-![image-20190429153000862](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429153000862.png)
+![image-20190429153000862](./images/mybatis-dynamic-sql/image-20190429153000862.png)
 
 
 
@@ -185,7 +185,7 @@ if节点展开
 
 通过MappedStatement去拿，MappedStatement转sqlSource处理，我们这里的sqlSource是DynamicSqlSource。
 
-![image-20190429153338743](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429153338743.png)
+![image-20190429153338743](./images/mybatis-dynamic-sql/image-20190429153338743.png)
 
 
 
@@ -195,13 +195,13 @@ if节点展开
 
 与StaticSqlSource不同，StaticSqlSource只需要封装一个BoundSql返回即可，因为解析xml阶段就处理完毕了。DynamicSqlSource还需要在执行过程中进行处理。
 
-![image-20190429153733567](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429153733567.png)
+![image-20190429153733567](./images/mybatis-dynamic-sql/image-20190429153733567.png)
 
 
 
 实例化一个DynamicContext对象
 
-![image-20190429154342143](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429154342143.png)
+![image-20190429154342143](./images/mybatis-dynamic-sql/image-20190429154342143.png)
 
 
 
@@ -215,7 +215,7 @@ rootSqlNode.apply(context);
 
 MiexedSqlNode转交内部结构自己去处理
 
-![image-20190429154540095](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429154540095.png)
+![image-20190429154540095](./images/mybatis-dynamic-sql/image-20190429154540095.png)
 
 
 
@@ -233,13 +233,13 @@ MiexedSqlNode转交内部结构自己去处理
 
 对foreach进行处理
 
-![image-20190429155624344](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429155624344.png)
+![image-20190429155624344](./images/mybatis-dynamic-sql/image-20190429155624344.png)
 
 
 
 在保存对应参数处理中，将参数存储为自身定义的格式，后续进行相应的替换
 
-![image-20190429155813718](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429155813718.png)
+![image-20190429155813718](./images/mybatis-dynamic-sql/image-20190429155813718.png)
 
 
 
@@ -253,7 +253,7 @@ _第一个换行节点跳过_
 
 ###### 解析if
 
-![image-20190429160723980](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429160723980.png)
+![image-20190429160723980](./images/mybatis-dynamic-sql/image-20190429160723980.png)
 
 因为是第一个节点 test内容是 index!=0所以会返回false，
 
@@ -271,7 +271,7 @@ _第一个换行节点跳过_
 
 交给Foreach节点下的FilteredDynamicContext处理
 
-![image-20190429161244823](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429161244823.png)
+![image-20190429161244823](./images/mybatis-dynamic-sql/image-20190429161244823.png)
 
 
 
@@ -279,9 +279,9 @@ _第一个换行节点跳过_
 
 再拼接到语句后面。
 
-![image-20190429161924868](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429161924868.png)
+![image-20190429161924868](./images/mybatis-dynamic-sql/image-20190429161924868.png)
 
-![image-20190429162928020](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429162928020.png)
+![image-20190429162928020](./images/mybatis-dynamic-sql/image-20190429162928020.png)
 
 
 
@@ -299,7 +299,7 @@ PrefixedContext
 
 ##### DynamicContext生成完毕
 
-![image-20190429163325792](/Users/yangsong/learn-note/images/mybatis-dynamic-sql/image-20190429163325792.png)
+![image-20190429163325792](images/mybatis-dynamic-sql/image-20190429163325792.png)
 
 
 
