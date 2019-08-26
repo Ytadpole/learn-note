@@ -265,13 +265,14 @@ private T createAdaptiveExtension() {
 
 
 
-遍历内部方法，对set方法处理
+遍历内部方法，对set方法注入处理
 
 ```java
 private T injectExtension(T instance) {
     try {
         if (objectFactory != null) {
             for (Method method : instance.getClass().getMethods()) {
+              //进行注入
                 if (isSetter(method)) {
                     /**
                      * Check {@link DisableInject} to see if we need auto injection for this property
@@ -287,6 +288,7 @@ private T injectExtension(T instance) {
                         String property = getSetterProperty(method);
                         Object object = objectFactory.getExtension(pt, property);
                         if (object != null) {
+                          //注入属性值
                             method.invoke(instance, object);
                         }
                     } catch (Exception e) {
