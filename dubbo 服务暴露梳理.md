@@ -32,4 +32,92 @@ ServiceBean//开始
 												
 								
 
+### filter
+主要构造 链代码
 
+```Java
+private static <T> Invoker<T> buildInvokerChain(final Invoker<T> invoker, String key, String group) {
+    Invoker<T> last = invoker;
+    List<Filter> filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);
+
+    if (!filters.isEmpty()) {
+        for (int i = filters.size() - 1; i >= 0; i--) {
+            final Filter filter = filters.get(i);
+            final Invoker<T> next = last;
+            last = new Invoker<T>() {
+
+                @Override
+                public Class<T> getInterface() { return invoker.getInterface();}
+
+                @Override
+                public URL getUrl() { return invoker.getUrl(); }
+
+                @Override
+                public boolean isAvailable() { return invoker.isAvailable(); }
+
+                @Override
+                public Result invoke(Invocation invocation) throws RpcException {
+                    Result asyncResult;
+                    //····省略
+                    return asyncResult;
+                }
+
+                @Override
+                public void destroy() { invoker.destroy(); }
+
+                @Override
+                public String toString() { return invoker.toString(); }
+            };
+        }
+    }
+    return new CallbackRegistrationInvoker<>(last, filters);
+}
+```
+
+
+
+### listener
+
+```java
+public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {
+    if (REGISTRY_PROTOCOL.equals(invoker.getUrl().getProtocol())) {
+        return protocol.export(invoker);
+    }
+  
+  //执行完暴露服务操作后，实例化ListenerExporterWrapper，构造函数中执行listener
+    return new ListenerExporterWrapper<T>(protocol.export(invoker),
+            Collections.unmodifiableList(ExtensionLoader.getExtensionLoader(ExporterListener.class)
+                    .getActivateExtension(invoker.getUrl(), EXPORTER_LISTENER_KEY)));
+}
+```
+
+构造函数
+
+```java
+public ListenerExporterWrapper(Exporter<T> exporter, List<ExporterListener> listeners) {
+    if (exporter == null) {
+        throw new IllegalArgumentException("exporter == null");
+    }
+    this.exporter = exporter;
+    this.listeners = listeners;
+  
+  	//执行
+    if (CollectionUtils.isNotEmpty(listeners)) {
+        RuntimeException exception = null;
+        for (ExporterListener listener : listeners) {
+            if (listener != null) {
+                try {
+                		//循环执行listener
+                    listener.exported(this);
+                } catch (RuntimeException t) {
+                    logger.error(t.getMessage(), t);
+                    exception = t;
+                }
+            }
+        }
+        if (exception != null) {
+            throw exception;
+        }
+    }
+}
+```
